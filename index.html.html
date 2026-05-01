@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Planner Login</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400;500&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ── 1. ANIMATED BACKGROUND ── */
+        body {
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bg {
+            position: fixed;
+            inset: 0;
+            background: url("https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80") center/cover no-repeat;
+            animation: bgZoom 18s ease-in-out infinite alternate;
+            z-index: -2;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(3, 12, 35, 0.82) 0%, rgba(8, 30, 75, 0.78) 100%);
+            z-index: -1;
+            animation: gradientShift 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgZoom {
+            from { transform: scale(1); }
+            to   { transform: scale(1.08); }
+        }
+
+        @keyframes gradientShift {
+            from { background: linear-gradient(135deg, rgba(5, 20, 50, 0.72), rgba(10, 40, 90, 0.65)); }
+            to   { background: linear-gradient(135deg, rgba(10, 40, 90, 0.72), rgba(0, 80, 150, 0.60)); }
+        }
+
+        /* ── 2. GLASS CARD ── */
+        .login-box {
+            background: rgba(255, 255, 255, 0.09);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 22px;
+            padding: 40px 40px 36px;
+            width: 420px;
+            text-align: center;
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18),
+                0 0 80px rgba(0, 120, 255, 0.1);
+            animation: slideUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(36px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── 3. LOGO ── */
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            color: #ffffff;
+            text-shadow:
+                0 0 6px rgba(255, 255, 255, 0.35),
+                0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Wave animation — letters */
+        @keyframes wave {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-7px); }
+        }
+
+        /* Plane glide animation */
+        @keyframes planeGlide {
+            0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+            25%       { transform: translateX(4px) translateY(-4px) rotate(5deg); }
+            75%       { transform: translateX(-4px) translateY(2px) rotate(-3deg); }
+        }
+
+        /* Pin bounce animation */
+        @keyframes pinBounce {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-5px); }
+        }
+
+        .logo span {
+            display: inline-block;
+        }
+
+        .letter {
+            color: #ffffff;
+            -webkit-text-fill-color: #ffffff;
+            text-shadow:
+                0 0 5px rgba(255, 255, 255, 0.3),
+                0 1px 3px rgba(0, 0, 0, 0.25);
+            animation: wave 2s ease-in-out infinite;
+        }
+
+        .logo span:nth-child(1) { animation-delay: 0.0s; }
+        .logo span:nth-child(2) { animation-delay: 0.12s; }
+        .logo span:nth-child(4) { animation-delay: 0.24s; }
+        .logo span:nth-child(5) { animation-delay: 0.36s; }
+        .logo span:nth-child(6) { animation-delay: 0.48s; }
+
+        .plane {
+            color: #ff5252;
+            -webkit-text-fill-color: #ff5252;
+            font-size: 20px;
+            vertical-align: middle;
+            display: inline-block;
+            animation: planeGlide 3s ease-in-out infinite;
+        }
+
+        .pin {
+            color: #ff4081;
+            -webkit-text-fill-color: #ff4081;
+            vertical-align: middle;
+            position: relative;
+            top: 1px;
+            display: inline-block;
+            animation: pinBounce 2.2s ease-in-out infinite;
+            animation-delay: 0.3s;
+        }
+
+        /* ── 6. SUBTITLE ── */
+        .subtitle {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 1);
+            margin-bottom: 24px;
+            letter-spacing: 0.3px;
+            font-weight: 500;
+        }
+
+        /* ── 3. INPUTS ── */
+        .input-group {
+            position: relative;
+            margin-bottom: 14px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 5px;
+            letter-spacing: 0.6px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 13px 16px;
+            border-radius: 10px;
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.07);
+            color: white;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border 0.25s, box-shadow 0.25s, background 0.25s;
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        .input-group input:focus {
+            border: 1.5px solid #00aaff;
+            box-shadow: 0 0 0 4px rgba(0, 170, 255, 0.22);
+            background: rgba(255, 255, 255, 0.13);
+        }
+
+        /* password toggle */
+        .password-container {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.45);
+            display: flex;
+            transition: color 0.2s;
+        }
+
+        .toggle-password:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .password-container input {
+            padding-right: 42px;
+        }
+
+        /* forgot */
+        .forgot {
+            text-align: right;
+            margin-top: -4px;
+            margin-bottom: 18px;
+        }
+
+        .forgot a {
+            font-size: 12.5px;
+            color: #55ccff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s, text-decoration 0.2s;
+        }
+
+        .forgot a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* ── 4. BUTTON ── */
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 8px;
+            background: linear-gradient(135deg, #0072ff, #00c6ff);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 17px;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: transform 0.22s, box-shadow 0.22s, filter 0.22s, text-shadow 0.22s;
+            box-shadow: 0 4px 20px rgba(0, 114, 255, 0.45);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 32px rgba(0, 198, 255, 0.65);
+            filter: brightness(1.12);
+            text-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+        }
+
+        .login-btn:active {
+            transform: translateY(2px) scale(0.97);
+            box-shadow: 0 2px 6px rgba(0, 114, 255, 0.25);
+            filter: brightness(0.93);
+        }
+
+        /* signup */
+        .signup-option {
+            margin-top: 20px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        .signup-option a {
+            color: #40d0ff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s, text-decoration 0.2s;
+        }
+
+        .signup-option a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* ── 6. Letter appear animation on load ── */
+        @keyframes letterAppear {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo span {
+            opacity: 0;
+            animation: letterAppear 0.4s ease forwards, wave 2s ease-in-out infinite;
+        }
+
+        .logo .plane {
+            animation: letterAppear 0.4s ease forwards, planeGlide 3s ease-in-out infinite;
+        }
+
+        .logo .pin {
+            animation: letterAppear 0.4s ease forwards, pinBounce 2.2s ease-in-out infinite;
+        }
+
+        .logo span:nth-child(1) { animation-delay: 0.1s, 0.5s; }
+        .logo span:nth-child(2) { animation-delay: 0.2s, 0.62s; }
+        .logo span:nth-child(3) { animation-delay: 0.3s, 0.5s; }
+        .logo span:nth-child(4) { animation-delay: 0.4s, 0.74s; }
+        .logo span:nth-child(5) { animation-delay: 0.5s, 0.86s; }
+        .logo span:nth-child(6) { animation-delay: 0.6s, 0.98s; }
+        .logo span:nth-child(7) { animation-delay: 0.7s, 0.8s; }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Animated Background -->
+    <div class="bg"></div>
+    <div class="bg-overlay"></div>
+
+    <div class="login-box">
+
+        <!-- LOGO -->
+        <div class="logo">
+            <span class="letter">T</span>
+            <span class="letter">R</span>
+            <span class="plane">✈️</span>
+            <span class="letter">V</span>
+            <span class="letter">E</span>
+            <span class="letter">L</span>
+            <span class="pin">📍</span>
+        </div>
+
+        <p class="subtitle">Start your journey with us</p>
+
+        <!-- FORM -->
+        <form>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div class="password-container">
+                    <input type="password" id="password" placeholder="Enter your password">
+                    <span class="toggle-password" id="togglePassword" title="Toggle visibility">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+
+            <div class="forgot">
+                <a href="#">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="login-btn">LOGIN</button>
+        </form>
+
+        <div class="signup-option">
+            Don't have an account? <a href="#">Sign up</a>
+        </div>
+
+    </div>
+
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function () {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+
+            if (type === 'text') {
+                this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+            } else {
+                this.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+            }
+        });
+    </script>
+
+</body>
+</html>
